@@ -91,7 +91,7 @@
 								sortable: true,
 								filterable: true,
 								height: 550,
-								toolbar: [ { name:'create' }, 
+								toolbar: [ { name:'create' }, { name:'save' }, 
 								              
 											{ template: kendo.template($("#template").html()) }],
 								columns: [
@@ -101,7 +101,7 @@
 									{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px" },
 									{ command: ['edit'] },
 									],
-								editable: "popup"
+								editable: "inline"
 							});
 									
 																
