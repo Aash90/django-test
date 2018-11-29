@@ -1,0 +1,132 @@
+<html>
+<head>
+    
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="/static/kendo.common.min.css" />
+    <link rel="stylesheet" href="/static/kendo.default.min.css" />
+    <link rel="stylesheet" href="/static/kendo.default.mobile.min.css" />
+
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/kendo.all.min.js"></script>
+    
+
+</head>
+<body>
+
+        <!--script src="../content/shared/js/products.js"></script-->
+		
+		<script  id="template">
+                <div class="refreshBtnContainer" id="reload">
+                    <a href="\\#" class="k-button" title="Refresh" onClick='load();'>Refresh</a>
+                </div>
+                
+            </script>
+		
+		
+        <div id="example">
+            <div id="grid"></div>
+			
+
+            <script>
+			
+			var prod_data;
+			
+			function load(){
+			
+			
+                function categoryDropDownEditor(container, options) {
+                    $('<input required name="' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                            autoBind: false,
+							dataSource: ['sports', 'electronics'],
+                            dataSource: {
+                                transport: {
+											read: {
+									  url: "categories",
+									  dataType: "json"
+									}
+									},
+                       
+                            },
+                        });
+                }
+			    	  
+				 $.ajax(  { url: "get_products", 
+							success: function(result){
+									prod_data = JSON.parse(result)
+									console.log(prod_data);
+														
+									
+									var dataSource = new kendo.data.DataSource({
+										   pageSize: 20,
+										   data: prod_data,
+										   //data :  JSON.parse(JSON.stringify([{"id": 1, "prod": "iPhone X", "category": "Electronics", "sub_cat": "Mobile"}, {"id": 2, "prod": "Xperia", "category": "Electronics", "sub_cat": "Mobile"}])),
+										   /*transport: {
+												read: {
+												  url: "get_products",
+												  dataType: "json"
+												}
+											  },*/
+										   autoSync: true,
+										   
+										   schema: {
+											   model: {
+												 fields: {
+													prod: { validation: { required: true } },
+													category: { defaultValue: "CAT"  },
+													sub_cat: { defaultValue: "SUB_CAT" }
+												 }
+											   }
+										   }
+										});
+										
+										var grid = $("#grid").kendoGrid({
+											dataSource: dataSource,
+											pageable: true,
+											sortable: true,
+											filterable: true,
+											height: 550,
+											toolbar: [ { name:"create" }, { template: kendo.template($("#template").html()) }],
+											columns: [
+												{ field:"prod",title:"Product Name" },
+										 { field: "category", title: "Category", width: "180px", editor: categoryDropDownEditor, template:"#=category#"},
+										
+												{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px" }
+												],
+												
+											editable: true
+										});
+									
+																
+									
+									
+									},
+							error: function(result){
+									console.log(result);
+									return (result);
+									},
+							
+						});
+				
+				
+  			   				
+				
+			   
+			}
+			
+			
+			$(document).ready(function () {
+				load();
+				
+				
+			});
+			
+
+            </script>
+        </div>
+
+
+</body>
+</html>
