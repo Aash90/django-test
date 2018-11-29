@@ -31,6 +31,9 @@
             <script>
 			
 			var prod_data;
+			var isSaving = false;
+			
+			
 			
 			function load(){
 			
@@ -39,7 +42,7 @@
                     $('<input required name="' + options.field + '"/>')
                         .appendTo(container)
                         .kendoDropDownList({
-                            autoBind: false,
+						    autoBind: false,
 							dataSource: ['sports', 'electronics'],
                             dataSource: {
                                 transport: {
@@ -82,22 +85,24 @@
 										   }
 										});
 										
-										var grid = $("#grid").kendoGrid({
-											dataSource: dataSource,
-											pageable: true,
-											sortable: true,
-											filterable: true,
-											height: 550,
-											toolbar: [ { name:"create" }, { template: kendo.template($("#template").html()) }],
-											columns: [
-												{ field:"prod",title:"Product Name" },
-										 { field: "category", title: "Category", width: "180px", editor: categoryDropDownEditor, template:"#=category#"},
-										
-												{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px" }
-												],
-												
-											editable: true
-										});
+							var grid = $("#grid").kendoGrid({
+								dataSource: dataSource,
+								pageable: true,
+								sortable: true,
+								filterable: true,
+								height: 550,
+								toolbar: [ { name:'create' }, 
+								              
+											{ template: kendo.template($("#template").html()) }],
+								columns: [
+									{ field:"prod",title:"Product Name" },
+							 { field: "category", title: "Category", width: "180px", editor: categoryDropDownEditor, template:"#=category#"},
+							
+									{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px" },
+									{ command: ['edit'] },
+									],
+								editable: "popup"
+							});
 									
 																
 									
