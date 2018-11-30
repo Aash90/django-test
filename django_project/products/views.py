@@ -59,6 +59,14 @@ def get_categories(request):
     return HttpResponse(json.dumps(categories))
 
 
+def get_all_subcategories(request):
+
+    sub_cat_objects = SubCategory.objects.all()
+
+    sub_categories = [cat.sub_category_name for cat in sub_cat_objects]
+    
+    return HttpResponse(json.dumps(sub_categories))
+
 
 
 def get_sub_categories(request, category):
