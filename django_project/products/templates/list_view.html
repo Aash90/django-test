@@ -43,11 +43,27 @@
                         .appendTo(container)
                         .kendoDropDownList({
 						    autoBind: false,
-							dataSource: ['sports', 'electronics'],
-                            dataSource: {
+							dataSource: {
                                 transport: {
 											read: {
 									  url: "categories",
+									  dataType: "json"
+									}
+									},
+                       
+                            },
+                        });
+                }
+				
+				function subCategoryDropDownEditor(container, options) {
+                    $('<input required name="' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+						    autoBind: false,
+							dataSource: {
+                                transport: {
+											read: {
+									  url: "sub_categories",
 									  dataType: "json"
 									}
 									},
@@ -98,7 +114,8 @@
 									{ field:"prod",title:"Product Name" },
 							 { field: "category", title: "Category", width: "180px", editor: categoryDropDownEditor, template:"#=category#"},
 							
-									{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px" },
+									{ field: "sub_cat", title:"SubCategory", format: "{0:c}", width: "130px",
+									                    editor: subCategoryDropDownEditor, template:"#=sub_cat#"},
 									{ command: ['edit'] },
 									],
 								editable: "inline"
